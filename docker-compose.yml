@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  localpgadmin:
+    # Use the Docker Image pgAdmin.
+    image: "dpage/pgadmin4:latest"
+    container_name: "localpgadmin"
+    restart: "always"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=localhost
+      - PGADMIN_DEFAULT_PASSWORD=localhost
+    ports:
+      - "8081:80"
+
+  localdatabase:
+    # Use the Docker Image postgres.
+    image: "postgres:latest"
+    container_name: "localdatabase"
+    # Setup the username, password, and database name.
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      # create keycloak DB (the application DB will be created by migration tool)
+      - POSTGRES_DB=testdb
+    ports:
+      # Maps port 5432 (on local physical machine) to port 5432 on the container. To connect within the cluster, still use 5432
+      - "5432:5432"
